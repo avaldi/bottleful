@@ -1,4 +1,5 @@
 import logging
+import traceback
 
 import requests
 
@@ -59,9 +60,15 @@ class ValidatedJsonView(BaseView):
                 self.get_schema(*args, **kwargs),
                 format_checker=jsonschema.FormatChecker()
             )
-        except jsonschema.ValidationError:
+        except jsonschema.ValidationError as e:
             logger.exception('Schema validation error')
-            raise HTTPError(requests.codes.bad, 'Schema validation error')
+
+            raise HTTPError(
+                requests.codes.bad,
+                'Schema validation error: %s',
+                exception=e,
+                traceback=traceback.format_exc()
+            )
 
     def __call__(self, *args, **kwargs):
         # Validate the request
