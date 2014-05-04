@@ -62,14 +62,28 @@ class BaseResource(object):
 class ApiResource(BaseResource):
     """
     """
-    pass
+
+    @abc.abstractproperty
+    def resource_name(self):
+        """ Resource name used to build the Restful URLs.
+        """
+        raise NotImplementedError
 
 
 class CountryBasedApiResource(BaseResource):
-    def path_transformer(self, path):
-        country_path_format = '/countries/<country_id:int>'
+    """
+    """
 
-        return country_path_format +  path
+    @abc.abstractproperty
+    def resource_name(self):
+        """ Resource name used to build the Restful URLs.
+        """
+        raise NotImplementedError
+
+    def path_transformer(self, path):
+        """
+        """
+        return '/countries/<country_id:int>' + path
 
 
 def register_resource(application, resource_class):

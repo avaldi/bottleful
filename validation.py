@@ -22,21 +22,22 @@ class BaseField(object):
 
 class BaseSchema(object):
 
-    def generate_schema(self):
+    @classmethod
+    def generate_schema(cls):
         """
         """
 
         field_names = [
-            attr for attr in dir(self) if isinstance(getattr(self, attr),
+            attr for attr in dir(cls) if isinstance(getattr(cls, attr),
                                                      BaseField)
         ]
 
         properties = dict([
-            (attr, getattr(self, attr).as_dict()) for attr in field_names
+            (attr, getattr(cls, attr).as_dict()) for attr in field_names
         ])
 
         required_fields = [
-            attr for attr in field_names if getattr(self, attr).required
+            attr for attr in field_names if getattr(cls, attr).required
         ]
 
         schema = {

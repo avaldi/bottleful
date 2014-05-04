@@ -15,6 +15,8 @@ logger = logging.getLogger(__name__)
 class BaseView(object):
 
     def __call__(self, *args, **kwargs):
+        """
+        """
         # Compute the response
         api_response = self.render(*args, **kwargs)
         # Transform the response to a dict
@@ -23,22 +25,24 @@ class BaseView(object):
         response.status = api_response.status_code
         return dict_response
 
-    def render(self):
+    def render(self, *args, **kwargs):
+        """
+        """
         raise NotImplementedError
 
 
 class ValidatedJsonView(BaseView):
+    """
+    """
 
-    # TODO: make it abstract attribute
-    schema = {}
-
-    def before_validation(self, *args, **kwargs):
-        pass
-
-    def after_validation(self, *args, **kwargs):
-        pass
+    def get_schema(self, *args, **kwargs):
+        """ TODO: change the schema for proper validation
+        """
+        return {}
 
     def _validate_request(self, *args, **kwargs):
+        """
+        """
         # Try to parse the Json data sent by the client
         try:
             request_json = request.json
@@ -52,7 +56,7 @@ class ValidatedJsonView(BaseView):
         try:
             jsonschema.validate(
                 request_json,
-                self.schema,
+                self.get_schema(*args, **kwargs),
                 format_checker=jsonschema.FormatChecker()
             )
         except jsonschema.ValidationError:
@@ -60,11 +64,8 @@ class ValidatedJsonView(BaseView):
             raise HTTPError(requests.codes.bad, 'Schema validation error')
 
     def __call__(self, *args, **kwargs):
-
-        self.before_validation(*args, **kwargs)
         # Validate the request
         self._validate_request(*args, **kwargs)
-        self.after_validation(*args, **kwargs)
 
         # Call super to handle the response
         return super(ValidatedJsonView, self).__call__(*args, **kwargs)
