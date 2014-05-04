@@ -4,22 +4,22 @@ class BaseField(object):
     """
     """
 
-    type = None
-    format = None
+    field_type = None
+    field_format = None
 
-    def __init__(self, field_type, field_format=None, required=False):
+    def __init__(self, field_type, field_format='', required=False):
         """
         """
-        self.type = field_type
-        self.format = field_format
+        self.field_type = field_type
+        self.field_format = field_format
         self.required = required
 
     def as_dict(self):
         """
         """
         return {
-            'type': self.type,
-            'format': self.format or ''
+            'type': self.field_type,
+            'format': self.field_format
         }
 
 
@@ -28,7 +28,7 @@ class BaseSchema(object):
     """
 
     @classmethod
-    def generate_schema(cls):
+    def get_schema(cls):
         """
         """
 
@@ -37,18 +37,16 @@ class BaseSchema(object):
                                                     BaseField)
         ]
 
-        properties = dict([
-            (attr, getattr(cls, attr).as_dict()) for attr in field_names
-        ])
+        properties = {
+            attr: getattr(cls, attr).as_dict() for attr in field_names
+        }
 
         required_fields = [
             attr for attr in field_names if getattr(cls, attr).required
         ]
 
-        schema = {
+        return {
             'type': 'object',
             'properties': properties,
             'required': required_fields
         }
-
-        return schema
