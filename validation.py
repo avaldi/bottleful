@@ -4,9 +4,6 @@ class BaseField(object):
     """
     """
 
-    field_type = None
-    field_format = None
-
     def __init__(self, field_type, field_format='', required=False):
         """
         """
