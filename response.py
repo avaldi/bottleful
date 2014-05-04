@@ -1,9 +1,9 @@
 
+
 default_success_dict = {
     'data': {},
     'success': True
 }
-
 
 default_failure_dict = {
     'data': {},
@@ -15,7 +15,11 @@ class ApiResponse(object):
     """ Basic JSON response to be sent by the API
     """
 
+    response_format = None
+
     def __init__(self, status_code=200, **kwargs):
+        """
+        """
         self.status_code = status_code
         self.result_data = kwargs.copy()
 

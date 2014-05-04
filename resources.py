@@ -10,20 +10,20 @@ logger = logging.getLogger(__name__)
 
 
 class BaseResource(object):
-    """ Base class to define Restful resources.
+    """ Base class to define restful resources.
     """
 
     __metaclass__ = abc.ABCMeta
 
     @abc.abstractproperty
     def resource_name(self):
-        """ Resource name used to build the Restful URLs.
+        """ Resource name used to build the restful URLs.
         """
         raise NotImplementedError
 
     def __init__(self, application=bottle.default_app()):
-        """ Initialize the Restful resource. Basically registers the bottle
-            routes for all the defined methods in the resource.
+        """ Initialize the restful resource. Basically registers the bottle
+        routes for all the defined methods in the resource.
         """
 
         self.application = application
@@ -36,11 +36,11 @@ class BaseResource(object):
                 pass
             else:
                 if callable(method):
-                    route_path = action_properties['path'] % {
-                        'resource_name': self.resource_name
-                    }
-
-                    route_path = self.path_transformer(route_path)
+                    route_path = self.path_transformer(
+                        action_properties['path'] % {
+                            'resource_name': self.resource_name
+                        }
+                    )
 
                     logger.info(
                         'Registering route %s - %s',
@@ -48,15 +48,17 @@ class BaseResource(object):
                         route_path
                     )
 
-                    # Register bottle route
+                    # register the bottle route
                     self.application.route(
                         route_path,
                         method=method_name,
                         callback=method
                     )
 
-    def path_transformer(self, url):
-        return url
+    def path_transformer(self, path):
+        """
+        """
+        return path
 
 
 class ApiResource(BaseResource):
@@ -65,25 +67,9 @@ class ApiResource(BaseResource):
 
     @abc.abstractproperty
     def resource_name(self):
-        """ Resource name used to build the Restful URLs.
+        """ Resource name used to build the restful URLs.
         """
         raise NotImplementedError
-
-
-class CountryBasedApiResource(BaseResource):
-    """
-    """
-
-    @abc.abstractproperty
-    def resource_name(self):
-        """ Resource name used to build the Restful URLs.
-        """
-        raise NotImplementedError
-
-    def path_transformer(self, path):
-        """
-        """
-        return '/countries/<country_id:int>' + path
 
 
 def register_resource(application, resource_class):

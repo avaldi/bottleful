@@ -1,6 +1,9 @@
 
 
 class BaseField(object):
+    """
+    """
+
     type = None
     format = None
 
@@ -21,6 +24,8 @@ class BaseField(object):
 
 
 class BaseSchema(object):
+    """
+    """
 
     @classmethod
     def generate_schema(cls):
@@ -29,7 +34,7 @@ class BaseSchema(object):
 
         field_names = [
             attr for attr in dir(cls) if isinstance(getattr(cls, attr),
-                                                     BaseField)
+                                                    BaseField)
         ]
 
         properties = dict([

@@ -1,10 +1,8 @@
 import logging
 import traceback
-
 import requests
 
 import jsonschema
-
 from bottle import HTTPError
 from bottle import request
 from bottle import response
@@ -14,15 +12,17 @@ logger = logging.getLogger(__name__)
 
 
 class BaseView(object):
+    """
+    """
 
     def __call__(self, *args, **kwargs):
         """
         """
-        # Compute the response
+        # compute the response
         api_response = self.render(*args, **kwargs)
-        # Transform the response to a dict
+        # transform the response to a dict
         dict_response = api_response.as_dict()
-        # Set the bottle response status code and return the response as a dict
+        # set the bottle response status code and return the response as a dict
         response.status = api_response.status_code
         return dict_response
 
@@ -44,13 +44,13 @@ class ValidatedJsonView(BaseView):
     def _validate_request(self, *args, **kwargs):
         """
         """
-        # Try to parse the Json data sent by the client
+        # try to parse the JSON data sent by the client
         try:
             request_json = request.json
         except ValueError:
             request_json = None
 
-        # If we can't make it, raise a 400
+        # if we can't make it, raise a 400
         if not request_json:
             raise HTTPError(requests.codes.bad, 'Request is not JSON')
 
@@ -62,7 +62,6 @@ class ValidatedJsonView(BaseView):
             )
         except jsonschema.ValidationError as e:
             logger.exception('Schema validation error')
-
             raise HTTPError(
                 requests.codes.bad,
                 'Schema validation error: %s',
@@ -71,8 +70,7 @@ class ValidatedJsonView(BaseView):
             )
 
     def __call__(self, *args, **kwargs):
-        # Validate the request
+        # validate the request
         self._validate_request(*args, **kwargs)
-
-        # Call super to handle the response
+        # call the super to handle the response
         return super(ValidatedJsonView, self).__call__(*args, **kwargs)
