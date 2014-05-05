@@ -3,9 +3,11 @@ import traceback
 import requests
 
 import jsonschema
-from bottle import HTTPError
+
 from bottle import request
 from bottle import response
+
+from boapi.errors import APIError
 
 
 logger = logging.getLogger(__name__)
@@ -52,7 +54,7 @@ class ValidatedJsonView(BaseView):
 
         # if we can't make it, raise a 400
         if not request_json:
-            raise HTTPError(requests.codes.bad, 'Request is not JSON')
+            raise APIError(requests.codes.bad, 'Request is not JSON')
 
         try:
             jsonschema.validate(
@@ -62,9 +64,9 @@ class ValidatedJsonView(BaseView):
             )
         except jsonschema.ValidationError as e:
             logger.exception('Schema validation error')
-            raise HTTPError(
+            raise APIError(
                 requests.codes.bad,
-                'Schema validation error: %s',
+                'Schema validation error',
                 exception=e,
                 traceback=traceback.format_exc()
             )

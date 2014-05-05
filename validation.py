@@ -41,18 +41,12 @@ class BaseSchema(object):
     def get_schema(cls):
         """
         """
-
-        field_names = [
-            attr for attr in dir(cls) if isinstance(getattr(cls, attr),
-                                                    BaseField)
-        ]
-
         properties = {
-            attr: getattr(cls, attr).as_dict() for attr in field_names
+            attr: getattr(cls, attr).as_dict() for attr in cls.field_names()
         }
 
         required_fields = [
-            attr for attr in field_names if getattr(cls, attr).required
+            attr for attr in cls.field_names() if getattr(cls, attr).required
         ]
 
         return {
