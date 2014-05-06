@@ -5,6 +5,9 @@ from bottle import HTTPError
 
 
 class APIError(HTTPError):
+    """ Main error exception. It subclass bottle.HTTPError automatically
+        adding the traceback to the response.
+    """
 
     def __init__(self, *args, **kwargs):
 

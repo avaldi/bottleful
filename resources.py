@@ -62,7 +62,7 @@ class BaseResource(object):
 
 
 class ApiResource(BaseResource):
-    """
+    """ Base API resource. Every resource should subclass from this class.
     """
 
     @abc.abstractproperty
@@ -75,4 +75,5 @@ class ApiResource(BaseResource):
 def register_resource(application, resource_class):
     """ Register the bottle routes of a resource.
     """
+
     resource_class(application)
