@@ -14,11 +14,12 @@ logger = logging.getLogger(__name__)
 
 
 class BaseView(object):
-    """
+    """ Base view class. Subclasses must define a render method that will
+    be called every time the view is requested by the client.
     """
 
     def __call__(self, *args, **kwargs):
-        """
+        """ Main method of the view. It defines the overall flow of the view.
         """
         # compute the response
         api_response = self.render(*args, **kwargs)
@@ -26,29 +27,34 @@ class BaseView(object):
         dict_response = api_response.as_dict()
         # set the bottle response status code and return the response as a dict
         response.status = api_response.status_code
+
         return dict_response
 
     def render(self, *args, **kwargs):
-        """
+        """ Render method that defines the logic of the view.
+        It must be overridden by the subclasses and must return an
+        APIResponse object including the response to be sent to the client.
         """
         raise NotImplementedError
 
 
-class SchemaAwareView(BaseView):
+class ValidatedJsonView(BaseView):
+    """ View that provides json validation before rendering the response.
+    Subclasses must implement the schema method to return a schema class to
+    be used when performing the validation through the jsonschema library.
+    """
 
     def schema(self, *args, **kwargs):
-        """ TODO: change the schema for proper validation
+        """ Placeholder to raise an Exception if the subclass does not implement
+        the schema method.
         """
         raise NotImplementedError
 
-
-class ValidatedJsonView(SchemaAwareView):
-    """
-    """
-
     def _validate_request(self, *args, **kwargs):
+        """ Validate the body of the request coming from the client based
+        on the provided schema (returned by the .schema() mnethod).
         """
-        """
+
         # try to parse the JSON data sent by the client
         try:
             request_json = request.json
@@ -59,6 +65,8 @@ class ValidatedJsonView(SchemaAwareView):
         if not request_json:
             raise ApiError(requests.codes.bad, 'Request is not JSON')
 
+        # Validates the json content of the request using jsonschema library,
+        # according to the schema provided by the subclass implementing schema()
         try:
             jsonschema.validate(
                 request_json,
@@ -67,14 +75,18 @@ class ValidatedJsonView(SchemaAwareView):
             )
         except jsonschema.ValidationError as e:
             logger.exception('Schema validation error')
+
             raise ApiError(
                 requests.codes.bad,
                 'Schema validation error',
-                exception=e,
-                traceback=traceback.format_exc()
+                exception=e
             )
 
     def __call__(self, *args, **kwargs):
+        """ Main method of the view. It overrides the main flow of the BaseView
+        by adding the validation process.
+        """
+
         # validate the request
         self._validate_request(*args, **kwargs)
         # call the super to handle the response
