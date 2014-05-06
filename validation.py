@@ -23,23 +23,35 @@ class BaseField(object):
 
 
 class BaseSchema(object):
-    """
+    """ Base class used to define the structure of the data coming
+        from the clients.
     """
 
     @classmethod
     def field_names(cls):
+        """ Generator that yields the names of the fields defined in this
+            schema class.
+        """
+
         for attr in dir(cls):
             if isinstance(getattr(cls, attr), BaseField):
                 yield attr
 
     @classmethod
     def primary_key(cls):
+        """ Returns the primary key set in this schema class.
+        """
+
         for attr in cls.field_names():
             if getattr(cls, attr).primary_key:
                 return attr
 
     @classmethod
     def _generate_json_schema(cls):
+        """ Generate the dictionary containing the validation rules to be
+            used with the json-schema validator.
+        """
+
         properties = {
             attr: getattr(cls, attr).as_dict() for attr in cls.field_names()
         }
@@ -56,8 +68,9 @@ class BaseSchema(object):
 
     @classmethod
     def as_json_schema(cls):
+        """ Lazily returns the generated json-schema dictionary.
         """
-        """
+
         if not hasattr(cls, '_schema'):
             cls._schema = cls._generate_json_schema()
 
