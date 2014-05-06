@@ -4,7 +4,8 @@ class BaseField(object):
     """
     """
 
-    def __init__(self, field_type, field_format='', required=False, primary_key=False):
+    def __init__(self, field_type, field_format='', required=False,
+                 primary_key=False):
         """
         """
         self.field_type = field_type
@@ -17,7 +18,7 @@ class BaseField(object):
         """
         return {
             'type': self.field_type,
-            'format': self.field_format
+            'format': self.field_format,
         }
 
 
@@ -52,5 +53,5 @@ class BaseSchema(object):
         return {
             'type': 'object',
             'properties': properties,
-            'required': required_fields
+            'required': required_fields,
         }
