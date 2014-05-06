@@ -34,14 +34,17 @@ class BaseView(object):
         raise NotImplementedError
 
 
-class ValidatedJsonView(BaseView):
-    """
-    """
+class SchemaAwareView(BaseView):
 
-    def get_schema(self, *args, **kwargs):
+    def schema(self, *args, **kwargs):
         """ TODO: change the schema for proper validation
         """
-        return {}
+        raise NotImplementedError
+
+
+class ValidatedJsonView(SchemaAwareView):
+    """
+    """
 
     def _validate_request(self, *args, **kwargs):
         """
@@ -59,7 +62,7 @@ class ValidatedJsonView(BaseView):
         try:
             jsonschema.validate(
                 request_json,
-                self.get_schema(*args, **kwargs),
+                self.schema(*args, **kwargs).as_json_schema(),
                 format_checker=jsonschema.FormatChecker()
             )
         except jsonschema.ValidationError as e:

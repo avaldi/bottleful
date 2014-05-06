@@ -39,9 +39,7 @@ class BaseSchema(object):
                 return attr
 
     @classmethod
-    def get_schema(cls):
-        """
-        """
+    def _generate_json_schema(cls):
         properties = {
             attr: getattr(cls, attr).as_dict() for attr in cls.field_names()
         }
@@ -55,3 +53,12 @@ class BaseSchema(object):
             'properties': properties,
             'required': required_fields,
         }
+
+    @classmethod
+    def as_json_schema(cls):
+        """
+        """
+        if not hasattr(cls, '_schema'):
+            cls._schema = cls._generate_json_schema()
+
+        return cls._schema
