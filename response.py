@@ -11,14 +11,14 @@ default_failure_dict = {
 }
 
 
-class ApiResponse(object):
+class APIResponse(object):
     """ Basic JSON response to be sent by the API
     """
 
     response_format = None
 
     def __init__(self, status_code=200, **kwargs):
-        """ Instantiate an ApiResponse object setting the passed status code
+        """ Instantiate an APIResponse object setting the passed status code
             and adding every keyword argument to the response.
         """
 

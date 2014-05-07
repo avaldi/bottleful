@@ -4,7 +4,7 @@ import traceback
 from bottle import HTTPError
 
 
-class ApiError(HTTPError):
+class APIError(HTTPError):
     """ Main error exception. It subclass bottle.HTTPError automatically and
     adds the traceback to the response.
     """
@@ -16,4 +16,4 @@ class ApiError(HTTPError):
         if sys.exc_info()[0]:
             kwargs['traceback'] = traceback.format_exc()
 
-        super(ApiError, self).__init__(*args, **kwargs)
+        super(APIError, self).__init__(*args, **kwargs)

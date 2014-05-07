@@ -6,7 +6,7 @@ import jsonschema
 from bottle import request
 from bottle import response
 
-from boapi.errors import ApiError
+from boapi.errors import APIError
 
 
 logger = logging.getLogger(__name__)
@@ -62,7 +62,7 @@ class ValidatedJsonView(BaseView):
 
         # if we can't make it, raise a 400
         if not request_json:
-            raise ApiError(requests.codes.bad, 'Request is not JSON')
+            raise APIError(requests.codes.bad, 'Request is not JSON')
 
         # Validates the json content of the request using jsonschema library,
         # according to the schema provided by the subclass implementing schema()
@@ -75,7 +75,7 @@ class ValidatedJsonView(BaseView):
         except jsonschema.ValidationError as e:
             logger.exception('Schema validation error')
 
-            raise ApiError(
+            raise APIError(
                 requests.codes.bad,
                 'Schema validation error',
                 exception=e
