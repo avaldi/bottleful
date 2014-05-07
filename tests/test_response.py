@@ -7,6 +7,8 @@ from boapi.response import APIResponse
 
 
 class TestAPIResponse(unittest.TestCase):
+    """ Test APIResponse functionality
+    """
 
     def setUp(self):
         """ Setup operations.
