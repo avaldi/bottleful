@@ -1,11 +1,11 @@
 
 
-default_success_dict = {
+DEFAULT_SUCCESS_DICT = {
     'data': {},
     'success': True
 }
 
-default_failure_dict = {
+DEFAULT_FAILURE_DICT = {
     'data': {},
     'success': False
 }
@@ -21,6 +21,8 @@ class APIResponse(object):
         """ Instantiate an APIResponse object setting the passed status code
             and adding every keyword argument to the response.
         """
+        if not (100 <= status_code < 600):
+            raise ValueError('Invalid status code')
 
         self.status_code = status_code
         self.result_data = kwargs.copy()
@@ -33,9 +35,9 @@ class APIResponse(object):
         # If the status code is bad (4xx and 5xx) use the default_failure_dict
         # otherwise default_success_dict
         if 400 <= self.status_code < 600:
-            self.response_format = default_failure_dict
+            self.response_format = DEFAULT_FAILURE_DICT
         else:
-            self.response_format = default_success_dict
+            self.response_format = DEFAULT_SUCCESS_DICT
 
         result = self.response_format.copy()
 
