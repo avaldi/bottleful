@@ -56,7 +56,10 @@ class BaseResource(object):
                     )
 
     def path_transformer(self, path):
-        """
+        """ Helper function used to transform the route path before
+        registering it. By default the method doesn't apply any transformation,
+        subclass BaseResource and override the method to implement
+        any transformation.
         """
         return path
 
