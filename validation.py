@@ -6,6 +6,7 @@ class BaseField(object):
 
     def __init__(self, field_type, field_format='', required=False,
                  primary_key=False):
+
         self.field_type = field_type
         self.field_format = field_format
         self.required = required
@@ -15,6 +16,7 @@ class BaseField(object):
         """ Returns a dict representing the field in a format that can be
         used by jsonschema validation library.
         """
+
         return {
             'type': self.field_type,
             'format': self.field_format,
