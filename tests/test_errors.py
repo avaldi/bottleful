@@ -14,6 +14,7 @@ class TestAPIError(unittest.TestCase):
         """
 
         exception_message = 'Test exception'
+
         try:
             raise Exception(exception_message)
         except Exception:

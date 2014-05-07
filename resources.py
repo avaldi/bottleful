@@ -50,7 +50,7 @@ class BaseResource(object):
 
                     # register the bottle route
                     self.application.route(
-                        route_path,
+                        path=route_path,
                         method=method_name,
                         callback=method
                     )
