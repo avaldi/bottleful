@@ -61,7 +61,7 @@ class BaseResource(object):
         return path
 
 
-class ApiResource(BaseResource):
+class APIResource(BaseResource):
     """ Base API resource. Every resource should subclass from this class.
     """
 
