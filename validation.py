@@ -1,20 +1,19 @@
 
 
 class BaseField(object):
-    """
+    """ Base class used by BaseSchema to define the fields of the schema.
     """
 
     def __init__(self, field_type, field_format='', required=False,
                  primary_key=False):
-        """
-        """
         self.field_type = field_type
         self.field_format = field_format
         self.required = required
         self.primary_key = primary_key
 
     def as_dict(self):
-        """
+        """ Returns a dict representing the field in a format that can be
+        used by jsonschema validation library.
         """
         return {
             'type': self.field_type,
@@ -24,13 +23,13 @@ class BaseField(object):
 
 class BaseSchema(object):
     """ Base class used to define the structure of the data coming
-        from the clients.
+    from the clients.
     """
 
     @classmethod
     def field_names(cls):
         """ Generator that yields the names of the fields defined in this
-            schema class.
+        schema class.
         """
 
         for attr in dir(cls):
@@ -49,7 +48,7 @@ class BaseSchema(object):
     @classmethod
     def _generate_json_schema(cls):
         """ Generate the dictionary containing the validation rules to be
-            used with the json-schema validator.
+        used with the json-schema validator.
         """
 
         properties = {
