@@ -50,18 +50,21 @@ class BaseResource(object):
 
                     # register the bottle route
                     self.application.route(
-                        route_path,
+                        path=route_path,
                         method=method_name,
                         callback=method
                     )
 
     def path_transformer(self, path):
-        """
+        """ Helper function used to transform the route path before
+        registering it. By default the method doesn't apply any transformation,
+        subclass BaseResource and override the method to implement
+        any transformation.
         """
         return path
 
 
-class ApiResource(BaseResource):
+class APIResource(BaseResource):
     """ Base API resource. Every resource should subclass from this class.
     """
 
