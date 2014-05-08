@@ -1,6 +1,5 @@
 import unittest
 
-from flexmock import flexmock
 import nose
 
 from boapi.resources import BaseResource
@@ -42,7 +41,6 @@ class TestBaseResource(unittest.TestCase):
             self.application,
             FakeResourceWithoutName
         )
-
 
     def test_resource_registering(self):
         """ Test registering adds the expected routes to the application
