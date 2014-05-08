@@ -1,6 +1,5 @@
 import unittest
 
-from flexmock import flexmock
 import nose
 
 from boapi.response import APIResponse
