@@ -4,7 +4,7 @@ class BaseField(object):
     """ Base class used by BaseSchema to define the fields of the schema.
     """
 
-    def __init__(self, field_type, field_format='', required=False,
+    def __init__(self, field_type, field_format=None, required=False,
                  primary_key=False):
 
         self.field_type = field_type
@@ -17,10 +17,16 @@ class BaseField(object):
         used by jsonschema validation library.
         """
 
-        return {
+        result = {
             'type': self.field_type,
-            'format': self.field_format,
         }
+
+        if self.field_format:
+            result.update({
+                'format': self.field_format,
+            })
+
+        return result
 
 
 class BaseSchema(object):
@@ -40,12 +46,20 @@ class BaseSchema(object):
 
     @classmethod
     def primary_key(cls):
-        """ Returns the primary key set in this schema class.
+        """ Returns the primary key of this schema class.
         """
 
-        for attr in cls.field_names():
-            if getattr(cls, attr).primary_key:
-                return attr
+        primary_keys = [
+            attr for attr in cls.field_names() if getattr(cls, attr).primary_key
+        ]
+
+        if not primary_keys:
+            return None
+
+        if len(primary_keys) == 1:
+            return primary_keys[0]
+
+        return primary_keys
 
     @classmethod
     def _generate_json_schema(cls):
