@@ -7,6 +7,8 @@ from boapi.resources import register_resource
 
 
 class TestBaseResource(unittest.TestCase):
+    """ Test BaseResource functionality
+    """
 
     class FakeApplication(object):
         """ Fake application used to check the resources get properly registered

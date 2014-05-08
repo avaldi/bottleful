@@ -1,12 +1,13 @@
 import unittest
 
-from flexmock import flexmock
 import nose
 
 from boapi.response import APIResponse
 
 
 class TestAPIResponse(unittest.TestCase):
+    """ Test APIResponse functionality
+    """
 
     def setUp(self):
         """ Setup operations.
