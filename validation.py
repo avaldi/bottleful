@@ -4,11 +4,12 @@ class BaseField(object):
     """ Base class used by BaseSchema to define the fields of the schema.
     """
 
-    def __init__(self, field_type, field_format=None, required=False,
-                 primary_key=False):
+    def __init__(self, field_type, field_format=None, field_pattern=None,
+                 required=False, primary_key=False):
 
         self.field_type = field_type
         self.field_format = field_format
+        self.field_pattern = field_pattern
         self.required = required
         self.primary_key = primary_key
 
@@ -21,10 +22,11 @@ class BaseField(object):
             'type': self.field_type,
         }
 
+        if self.field_pattern:
+            result['pattern'] = self.field_pattern
+
         if self.field_format:
-            result.update({
-                'format': self.field_format,
-            })
+            result['format'] = self.field_format
 
         return result
 
