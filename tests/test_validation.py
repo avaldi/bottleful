@@ -54,19 +54,19 @@ class TestBaseSchema(unittest.TestCase):
     class FakeSchemaWithoutPK(BaseSchema):
         """ Fake schema without a PK field
         """
-        email = BaseField('string')
-        mobile = BaseField('string')
-        fake_field = BaseField('string')
+        email = BaseField(field_type='string', field_format='email', required=True)
+        mobile = BaseField(field_type='string', required=True)
+        fake_field = BaseField(field_type='string')
 
     class FakeSchemaSinglePK(FakeSchemaWithoutPK):
         """ Fake schema with a single PK field
         """
-        uuid = BaseField('string', primary_key=True)
+        uuid = BaseField(field_type='string', primary_key=True)
 
     class FakeSchemaMultiplePK(FakeSchemaSinglePK):
         """ Fake schema with multiple PK fields
         """
-        uuid2 = BaseField('string', primary_key=True)
+        uuid2 = BaseField(field_type='string', primary_key=True)
 
     def test_field_names_generation(self):
         """ Test that the field names returned by .field_names() are correct
@@ -105,3 +105,30 @@ class TestBaseSchema(unittest.TestCase):
 
         nose.tools.assert_equals(pk_set, expected_pks)
 
+    def test_json_schema(self):
+        """ Test the overall json-schema generation
+        """
+
+        expected_schema = {
+            'type': 'object',
+            'properties': {
+                'email': {
+                    'type': 'string',
+                    'format': 'email'
+                },
+                'mobile': {
+                    'type': 'string'
+                },
+                'uuid': {
+                    'type': 'string'
+                },
+                'fake_field': {
+                    'type': 'string'
+                },
+            },
+            'required': ['email', 'mobile']
+        }
+
+        generated_schema = self.FakeSchemaSinglePK.as_json_schema()
+
+        nose.tools.assert_equals(generated_schema, expected_schema)

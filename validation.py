@@ -83,7 +83,7 @@ class BaseSchema(object):
 
     @classmethod
     def as_json_schema(cls):
-        """ Lazily returns the generated json-schema dictionary.
+        """ Returns the generated json-schema dictionary.
         """
 
         if not hasattr(cls, '_schema'):
