@@ -64,12 +64,20 @@ class ValidatedJsonView(BaseView):
         if not request_json:
             raise APIError(httplib.BAD_REQUEST, 'Request is not JSON')
 
+        # Get the schema from the the subclass implementing schema()
+        schema = self.schema(*args, **kwargs)
+
+        if not schema:
+            # If we don't have a schema, just returns. We basically only
+            # check that the request has valid Json format.
+            return
+
         # Validates the json content of the request using jsonschema library,
-        # according to the schema provided by the subclass implementing schema()
+        # according to the schema provided
         try:
             jsonschema.validate(
                 request_json,
-                self.schema(*args, **kwargs).as_json_schema(),
+                schema.as_json_schema(),
                 format_checker=jsonschema.FormatChecker()
             )
         except jsonschema.ValidationError as e:
