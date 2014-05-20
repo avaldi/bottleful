@@ -77,7 +77,7 @@ class ValidatedJsonView(BaseView):
 
             raise APIError(
                 httplib.BAD_REQUEST,
-                'Schema validation error',
+                'Schema validation error: %s' % e.message,
                 exception=e
             )
 
