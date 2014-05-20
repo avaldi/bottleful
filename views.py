@@ -1,5 +1,5 @@
 import logging
-import requests
+import httplib
 
 import jsonschema
 
@@ -62,7 +62,7 @@ class ValidatedJsonView(BaseView):
 
         # if we can't make it, raise a 400
         if not request_json:
-            raise APIError(requests.codes.bad, 'Request is not JSON')
+            raise APIError(httplib.BAD_REQUEST, 'Request is not JSON')
 
         # Validates the json content of the request using jsonschema library,
         # according to the schema provided by the subclass implementing schema()
@@ -76,7 +76,7 @@ class ValidatedJsonView(BaseView):
             logger.exception('Schema validation error')
 
             raise APIError(
-                requests.codes.bad,
+                httplib.BAD_REQUEST,
                 'Schema validation error',
                 exception=e
             )
