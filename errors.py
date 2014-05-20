@@ -1,5 +1,5 @@
 import sys
-import traceback
+import traceback as tb
 
 from bottle import HTTPError
 
@@ -15,7 +15,7 @@ class APIError(HTTPError):
         """
 
         if sys.exc_info()[0]:
-            traceback = traceback.format_exc()
+            traceback = tb.format_exc()
 
         super(APIError, self).__init__(
             status=status,
