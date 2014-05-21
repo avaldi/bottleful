@@ -67,12 +67,7 @@ class BaseResource(object):
 class APIResource(BaseResource):
     """ Base API resource. Every resource should subclass from this class.
     """
-
-    @abc.abstractproperty
-    def resource_name(self):
-        """ Resource name used to build the restful URLs.
-        """
-        raise NotImplementedError
+    pass
 
 
 def register_resource(application, resource_class):
