@@ -5,12 +5,11 @@ class BaseField(object):
     """
 
     def __init__(self, field_type, field_format=None, field_pattern=None,
-                 required=False, primary_key=False):
+                 primary_key=False):
 
         self.field_type = field_type
         self.field_format = field_format
         self.field_pattern = field_pattern
-        self.required = required
         self.primary_key = primary_key
 
     def as_dict(self):
@@ -35,6 +34,9 @@ class BaseSchema(object):
     """ Base class used to define the structure of the data coming
     from the clients.
     """
+
+    # By default, no field is required
+    required_fields = []
 
     @classmethod
     def field_names(cls):
@@ -73,14 +75,10 @@ class BaseSchema(object):
             attr: getattr(cls, attr).as_dict() for attr in cls.field_names()
         }
 
-        required_fields = [
-            attr for attr in cls.field_names() if getattr(cls, attr).required
-        ]
-
         return {
             'type': 'object',
             'properties': properties,
-            'required': required_fields,
+            'required': cls.required_fields,
         }
 
     @classmethod
