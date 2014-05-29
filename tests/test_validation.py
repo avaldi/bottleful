@@ -54,9 +54,11 @@ class TestBaseSchema(unittest.TestCase):
     class FakeSchemaWithoutPK(BaseSchema):
         """ Fake schema without a PK field
         """
-        email = BaseField(field_type='string', field_format='email', required=True)
-        mobile = BaseField(field_type='string', required=True)
+        email = BaseField(field_type='string', field_format='email')
+        mobile = BaseField(field_type='string')
         fake_field = BaseField(field_type='string')
+
+        required_fields = ['email', 'mobile']
 
     class FakeSchemaSinglePK(FakeSchemaWithoutPK):
         """ Fake schema with a single PK field
