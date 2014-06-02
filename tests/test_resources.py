@@ -2,8 +2,8 @@ import unittest
 
 import nose
 
-from boapi.resources import BaseResource
-from boapi.resources import register_resource
+from bottleful.resources import BaseResource
+from bottleful.resources import register_resource
 
 
 class TestBaseResource(unittest.TestCase):

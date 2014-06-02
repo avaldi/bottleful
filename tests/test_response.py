@@ -2,7 +2,7 @@ import unittest
 
 import nose
 
-from boapi.response import APIResponse
+from bottleful.response import APIResponse
 
 
 class TestAPIResponse(unittest.TestCase):

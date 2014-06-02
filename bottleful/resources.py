@@ -3,7 +3,7 @@ import logging
 
 import bottle
 
-from boapi import HTTP_ACTIONS
+from bottleful import HTTP_ACTIONS
 
 
 logger = logging.getLogger(__name__)

@@ -2,7 +2,7 @@ import unittest
 
 import nose
 
-from boapi.errors import APIError
+from bottleful.errors import APIError
 
 
 class TestAPIError(unittest.TestCase):

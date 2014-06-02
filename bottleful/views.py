@@ -6,7 +6,7 @@ import jsonschema
 from bottle import request
 from bottle import response
 
-from boapi.errors import APIError
+from bottleful.errors import APIError
 
 
 logger = logging.getLogger(__name__)

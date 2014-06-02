@@ -4,8 +4,8 @@ import unittest
 
 import nose
 
-from boapi.validation import BaseField
-from boapi.validation import BaseSchema
+from bottleful.validation import BaseField
+from bottleful.validation import BaseSchema
 
 
 class TestBaseField(unittest.TestCase):
