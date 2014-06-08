@@ -1,7 +1,7 @@
 bottleful - Use bottle to create RESTful API
 ========
 
-*bottleful* is a small Python library that extend [bottle.py](http://bottlepy.org/) to allow the creation of simple RESTful API.
+*bottleful* is a small Python library that extends [bottle.py](http://bottlepy.org/) to allow the creation of simple RESTful API.
 
 Installation
 ------------
