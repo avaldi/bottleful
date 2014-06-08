@@ -85,8 +85,4 @@ class BaseSchema(object):
     def as_json_schema(cls):
         """ Returns the generated json-schema dictionary.
         """
-
-        if not hasattr(cls, '_schema'):
-            cls._schema = cls._generate_json_schema()
-
-        return cls._schema
+        return cls._generate_json_schema()
